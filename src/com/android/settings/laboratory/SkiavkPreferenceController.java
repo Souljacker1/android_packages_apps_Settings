@@ -23,8 +23,11 @@ import com.android.settingslib.development.SystemPropPoker;
 public class SkiavkPreferenceController extends TogglePreferenceController {
 
     private static final String PROPERTY_RENDERER = "persist.sys.hwui.renderer";
+    private static final String PROPERTY_RENDERER_ENGINE = "persist.sys.renderengine.backend";
     private static final String PROPERTY_USES_VULKAN = "ro.hwui.use_vulkan";
-    private static final String SKIAGL = "skiagl";
+    private static final String OPENGL_THREADED = "threaded";
+    private static final String SKIA_THREADED = "skiaglthreaded";
+    private static final String OPENGL = "opengl";
     private static final String SKIAVK = "skiavk";
 
     public SkiavkPreferenceController(Context context, String key) {
@@ -47,7 +50,8 @@ public class SkiavkPreferenceController extends TogglePreferenceController {
 
     @Override
     public boolean setChecked(boolean isChecked) {
-        SystemProperties.set(PROPERTY_RENDERER, isChecked ? SKIAVK : SKIAGL);
+        SystemProperties.set(PROPERTY_RENDERER, isChecked ? SKIAVK : OPENGL);
+        SystemProperties.set(PROPERTY_RENDERER_ENGINE, isChecked ? SKIA_THREADED : OPENGL_THREADED);
         SystemPropPoker.getInstance().poke();
         return true;
     }
